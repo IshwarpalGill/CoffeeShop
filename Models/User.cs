@@ -18,5 +18,9 @@ namespace CoffeeShop.Models
         public string password { get; set; }
 
         public string phone { get; set; }
+
+        public string gender { get; set; }
+
+        public bool recieveEmail { get; set; }
     }
 }

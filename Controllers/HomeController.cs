@@ -32,6 +32,11 @@ namespace CoffeeShop.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         //public IActionResult ValidPasssword(string username,string password, string email)
         //{
         //    Match getMatch = Regex.Match(password, @"^[A - Za - z0 - 9]{6,30}$");
@@ -44,8 +49,8 @@ namespace CoffeeShop.Controllers
         //        return InvalidPassword();
         //    }
         //}
-        
-        public IActionResult Registered(User user)
+
+        public IActionResult Registered(Users user)
         {
             //use ViewBag to hold data to be displayed in the View
             //ViewBag.UserName = username;
@@ -53,6 +58,42 @@ namespace CoffeeShop.Controllers
             //ViewBag.Email = email;
 
             return View(user);
+        }
+
+        
+
+        public IActionResult MakeNewUser(Users user)
+        {
+            ShopDBContext db = new ShopDBContext();
+            db.Add(user);
+            db.SaveChanges();
+
+
+            return View("Registered", user);
+        }
+
+        public IActionResult Shop(string username, string password)
+        {
+            ShopDBContext db = new ShopDBContext();
+
+            Users userFound = new Users();
+
+            TempData["Registered"] = false;
+
+            foreach (Users user in db.Users)
+            {
+                if (user.Username == username && user.Password == password)
+                {
+                    userFound = user;
+
+                    TempData["Registered"] = true;
+
+                }
+
+            }
+
+
+            return View(db);
         }
 
         public IActionResult InvalidPassword()
